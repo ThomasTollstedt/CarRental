@@ -1,0 +1,57 @@
+﻿@model IEnumerable<CarRental.Models.Booking>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    var successMessage = TempData["SuccessMessage"] as string;
+}
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">@successMessage</div>
+}
+
+<h1>Bokningssida</h1>
+<h3>Nedan kan du se dina bokningar</h3>
+<p>
+    <a asp-action="Create">Skapa bokning</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Car)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Car.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" method="post" >Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
+               @* <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Är du säker på att du vill ta bort denna bokning?');">Ta bort</button> </form> *@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
