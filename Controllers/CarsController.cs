@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CarRental.Controllers
 {
-    [Authorize]
+  
 public class CarsController : Controller
     {
         private readonly ICar _carRepository;
@@ -63,23 +63,41 @@ public class CarsController : Controller
         [Authorize(Roles = "Admin")]
         public ActionResult Edit(int id)
         {
-            return View();
+            var car = _carRepository.GetCar(id);
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            return View(car);
         }
 
         // POST: CarsController/Edit/5  
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Car car)
         {
-            try
+            if (id != car.Id)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest();
             }
-            catch
+            if (ModelState.IsValid)
             {
-                return View();
+                try
+                {
+                    _carRepository.Update(car);
+                        TempData["Message"] = "Bilen uppdaterad!";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Gick inte att spara, prova igen");
+                 
+                }
+                
             }
+            return View(car);
         }
 
         // GET: CarsController/Delete/5  

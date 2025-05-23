@@ -1,6 +1,9 @@
 using CarRental.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services; // Add this using statement
+using CarRental.Services;
+
 
 namespace CarRental
 {
@@ -15,16 +18,23 @@ namespace CarRental
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+            
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 
             builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            //.AddDefaultTokenProviders();
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddControllersWithViews();
             builder.Services.AddAuthorization();
 
             builder.Services.AddTransient<IBooking, BookingRepository>();
             builder.Services.AddTransient<ICar, CarRepository>();
+
+            // Register the DummyEmailSender
+            builder.Services.AddTransient<IEmailSender, DummyEmailSender>();
+
             builder.Services.AddRazorPages();
 
             var app = builder.Build();

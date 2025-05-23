@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CarRental.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Customer")]
     public class BookingsController : Controller
     {
         private readonly IBooking _bookingRepository;
@@ -21,7 +21,7 @@ namespace CarRental.Controllers
 
 
         // GET: BookingsController
-        [Authorize(Roles = "Customer,Admin")]
+        //[Authorize(Roles = "Customer,Admin")]
         public ActionResult Index()
         {
             var bookings = _bookingRepository.GetAllBookings(); // Hämtar alla bokningar
@@ -41,7 +41,7 @@ namespace CarRental.Controllers
 
         // GET: BookingsController/Create
         [HttpGet]
-        [Authorize(Roles = "Customer")]
+        //[Authorize(Roles = "Customer")]
         public IActionResult Create(int? carId)
         {
            var availableCars = _carRepository.ListAllCars(); // Hämtar alla bilar
@@ -52,7 +52,7 @@ namespace CarRental.Controllers
         // POST: BookingsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Customer")]
+        //[Authorize(Roles = "Customer")]
         public IActionResult Create(Booking booking)
         {
             try
@@ -83,6 +83,7 @@ namespace CarRental.Controllers
         }
 
         // GET: BookingsController/Edit/5
+        //[Authorize(Roles = "Customer")]
         public ActionResult Edit(int id) // Tas bort???????
         {
             var booking = _bookingRepository.GetBookingById(id);
@@ -93,6 +94,7 @@ namespace CarRental.Controllers
         // POST: BookingsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //[Authorize(Roles = "Customer")]
         public ActionResult Edit(int id, IFormCollection collection) // Tas bort pga User story???????
         {
             try
@@ -106,7 +108,7 @@ namespace CarRental.Controllers
         }
 
         //GET: BookingsController/Delete/5
-        [Authorize(Roles = "Customer,Admin")]
+        //[Authorize(Roles = "Customer,Admin")]
         public ActionResult Delete(int id)
         {
             var booking = _bookingRepository.GetBookingById(id);
