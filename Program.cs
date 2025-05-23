@@ -53,37 +53,7 @@ namespace CarRental
             app.MapRazorPages()
                .WithStaticAssets();
 
-            //using (var scope = app.Services.CreateScope())
-            //{ 
-            //var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-
-            //    string[] roleNames = { "Customer", "Admin" };
-            //    foreach (var roleName in roleNames)
-            //    {
-            //        if (!await roleManager.RoleExistsAsync(roleName))
-            //        {
-            //            await roleManager.CreateAsync(new IdentityRole(roleName));
-            //        }
-            //    }
-
-            //    var adminEmail = "admin@admin.com";
-            //    var adminPassword = "Admin123!";
-            //    var adminUser = await userManager.FindByEmailAsync(adminEmail);
-            //    if (adminUser == null)
-            //    {
-            //        adminUser = new IdentityUser { UserName = adminEmail, Email = adminEmail };
-            //        var result = await userManager.CreateAsync(adminUser, adminPassword);
-            //        if (result.Succeeded)
-            //        {
-            //            await userManager.AddToRoleAsync(adminUser, "Admin");
-            //        }
-                    
-            //    }
-
-
-            //}
 
                 app.Run();
         }
