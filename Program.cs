@@ -1,12 +1,13 @@
 using CarRental.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace CarRental
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +17,10 @@ namespace CarRental
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+            builder.Services.AddAuthorization();
 
             builder.Services.AddTransient<IBooking, BookingRepository>();
             builder.Services.AddTransient<ICar, CarRepository>();
@@ -51,7 +53,39 @@ namespace CarRental
             app.MapRazorPages()
                .WithStaticAssets();
 
-            app.Run();
+            //using (var scope = app.Services.CreateScope())
+            //{ 
+            //var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+
+            //    string[] roleNames = { "Customer", "Admin" };
+            //    foreach (var roleName in roleNames)
+            //    {
+            //        if (!await roleManager.RoleExistsAsync(roleName))
+            //        {
+            //            await roleManager.CreateAsync(new IdentityRole(roleName));
+            //        }
+            //    }
+
+            //    var adminEmail = "admin@admin.com";
+            //    var adminPassword = "Admin123!";
+            //    var adminUser = await userManager.FindByEmailAsync(adminEmail);
+            //    if (adminUser == null)
+            //    {
+            //        adminUser = new IdentityUser { UserName = adminEmail, Email = adminEmail };
+            //        var result = await userManager.CreateAsync(adminUser, adminPassword);
+            //        if (result.Succeeded)
+            //        {
+            //            await userManager.AddToRoleAsync(adminUser, "Admin");
+            //        }
+                    
+            //    }
+
+
+            //}
+
+                app.Run();
         }
     }
 }

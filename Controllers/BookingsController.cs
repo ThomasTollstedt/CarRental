@@ -38,7 +38,7 @@ namespace CarRental.Controllers
 
         // GET: BookingsController/Create
         [HttpGet]
-        public ActionResult Create(int? carId)
+        public IActionResult Create(int? carId)
         {
            var availableCars = _carRepository.ListAllCars(); // Hämtar alla bilar
             ViewBag.Cars = new SelectList(availableCars, "Id", "DisplayName", carId); // Skapar en SelectList med bilarna
