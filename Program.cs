@@ -1,13 +1,12 @@
 using CarRental.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace CarRental
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +23,7 @@ namespace CarRental
 
             builder.Services.AddTransient<IBooking, BookingRepository>();
             builder.Services.AddTransient<ICar, CarRepository>();
-
+            builder.Services.AddRazorPages();
 
             var app = builder.Build();
 
@@ -42,6 +41,7 @@ namespace CarRental
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
@@ -50,12 +50,12 @@ namespace CarRental
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
+          
             app.MapRazorPages()
                .WithStaticAssets();
 
 
-
-                app.Run();
+            app.Run();
         }
     }
 }
